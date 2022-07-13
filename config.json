@@ -1,0 +1,43 @@
+{
+    "title": "crypto-wizards",
+    "width" : 1280,
+    "height": 853,
+    "background": "./sprites/background/back.jpg",
+    "card-settings" : {
+        "width": 150,
+        "height": 150,
+        "x" : 15,
+        "y" : 16
+    },
+    "card-1" : {
+        "Health": 100,
+        "Damage": 25,
+        "w" : 2,
+        "h": 2
+    },
+    "card-2" : {
+        "Health": 150,
+        "Damage": 15,
+        "w" : 2,
+        "h": 2
+    },
+    "card-3" : {
+        "Health": 350,
+        "Damage": 60,
+        "w" : 2,
+        "h": 2
+    },
+    "card-4" : {
+        "Health": 50,
+        "Damage": 230,
+        "w" : 2,
+        "h": 2
+    },
+    "idle": {
+        "frameOX" : 2,
+        "frameOY" : 7,
+        "frameWidth": 12,
+        "frameHeight" : 6,
+        "frameCount" : 8
+    }
+}
