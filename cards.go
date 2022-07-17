@@ -30,11 +30,11 @@ func (c *Card) Draw(target *ebiten.Image) {
 	target.DrawImage(c.Img, &opt)
 }
 
-func GetCards() []Card {
-	c := make([]Card, 4)
+func GetCards() []*Card {
+	c := make([]*Card, 4)
 
 	for i := 0; i < 4; i++ {
-		c[i] = *Cards[i+1]
+		c[i] = Cards[i+1]
 	}
 
 	return c
@@ -42,11 +42,18 @@ func GetCards() []Card {
 
 // pop card up when user chooses it
 func Choosing(n int) {
-	Cards[n].y -= 50
-}
-
-func CancelChoose(n int) {
-	Cards[n].y += 50
+	switch {
+	case CardStates[Cards[n]].Choosen && !CardStates[Cards[n]].Move:
+		Cards[n].y -= 75
+		PlayerStates[Players[1]].Choosing = true
+		PlayerStates[Players[1]].Card = n
+		CardStates[Cards[n]].Choosen = false
+	case !CardStates[Cards[n]].Choosen && !CardStates[Cards[n]].Move:
+		Cards[n].y += 75
+		PlayerStates[Players[1]].Choosing = false
+		PlayerStates[Players[1]].Card = 0
+		CardStates[Cards[n]].Choosen = true
+	}
 }
 
 func init() {

@@ -32,12 +32,5 @@
         "Damage": 230,
         "w" : 2,
         "h": 2
-    },
-    "idle": {
-        "frameOX" : 2,
-        "frameOY" : 7,
-        "frameWidth": 12,
-        "frameHeight" : 6,
-        "frameCount" : 8
     }
 }

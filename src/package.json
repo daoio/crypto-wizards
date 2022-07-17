@@ -1,0 +1,23 @@
+{
+  "name": "crypto-wizards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daoio/crypto-wizards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daoio/crypto-wizards/issues"
+  },
+  "homepage": "https://github.com/daoio/crypto-wizards#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.0",
+    "lit-js-sdk": "^1.1.198"
+  }
+}

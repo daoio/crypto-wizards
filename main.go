@@ -9,6 +9,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/spf13/viper"
 )
 
@@ -17,18 +18,37 @@ type Game struct {
 	background *ebiten.Image
 }
 
+// repeatingKeyPressed return true when key is pressed considering the repeat state.
+func repeatingKeyPressed(key ebiten.Key) bool {
+	const (
+		delay    = 30
+		interval = 3
+	)
+	d := inpututil.KeyPressDuration(key)
+	if d == 1 {
+		return true
+	}
+	if d >= delay && (d-delay)%interval == 0 {
+		return true
+	}
+	return false
+}
+
 // updates screen each tic
 func (g *Game) Update() error {
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	//opt := ebiten.DrawImageOptions{}
+	img, _ := ebitenutil.NewImageFromURL("https://bafkreiekpohkd4xnoykoi6o4efhsrnifsk3w73a5o2frq3prfi2idibno4.ipfs.nftstorage.link/")
+	op := ebiten.DrawImageOptions{}
+	screen.DrawImage(img, &op)
 
 	// get all cards
 	c := GetCards()
 
 	CheckChoose(screen)
+	CheckMove(screen)
 	switch {
 	default:
 		// render background
@@ -73,6 +93,7 @@ func init() {
 	}
 }
 
+// Runs new game
 func main() {
 	game := NewGame()
 	ebiten.SetWindowTitle(viper.GetString("title"))

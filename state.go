@@ -1,20 +1,43 @@
 package main
 
-/*
-	Simple game state
+// state maps
+var CardStates = make(map[*Card]*CardState)
+var PlayerStates = make(map[*Player]*PlayerState)
 
-	0 - new game started
-	{
-		iter:
-		1 - player 1 turn
-		2 - player 2 turn
-	}
-	3 - player 1 wins
-	4 - player 2 wins
-*/
-var State int
+type GameState struct {
+	// importing ethereum account via private key
+	Import bool
+}
+
+type CardState struct {
+	Choosen bool
+	Move    bool
+	Lost    bool
+	Won     bool
+}
+
+type PlayerState struct {
+	Choosing bool
+	// id of choosen card
+	Card int
+	Move bool
+}
 
 func init() {
-	// i.e. game has been started
-	State = 0
+	c := GetCards()
+	p := GetPlayers()
+
+	for i := 0; i < len(p); i++ {
+		PlayerStates[p[i]] = &PlayerState{
+			Choosing: false,
+			Card:     0,
+			Move:     false,
+		}
+	}
+
+	for i := 0; i < len(c); i++ {
+		CardStates[c[i]] = &CardState{
+			Choosen: true,
+		}
+	}
 }
