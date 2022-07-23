@@ -1,0 +1,9 @@
+{
+    "name" : "DECK",
+    "collection-id" : 1,
+    "description" : "Meta NFT contained 4 ERC721 cards",
+    "card-1" : "https://nftstorage.link/ipfs/bafybeigr3plauwv4nz3wn2eliorfuzgwj2xeap7j36vbn2wdrmyvveun2i/1.json",
+    "card-2" : "https://nftstorage.link/ipfs/bafybeigr3plauwv4nz3wn2eliorfuzgwj2xeap7j36vbn2wdrmyvveun2i/2.json",
+    "card-3" : "https://nftstorage.link/ipfs/bafybeigr3plauwv4nz3wn2eliorfuzgwj2xeap7j36vbn2wdrmyvveun2i/3.json",
+    "card-4" : "https://nftstorage.link/ipfs/bafybeigr3plauwv4nz3wn2eliorfuzgwj2xeap7j36vbn2wdrmyvveun2i/4.json"
+  }
