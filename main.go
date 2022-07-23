@@ -1,106 +1,66 @@
-// game and objects initialization
 package main
 
 import (
-	_ "image/jpeg"
 	_ "image/png"
 	"log"
 
-	"github.com/fsnotify/fsnotify"
+	"github.com/daoio/crypto-wizards/cards"
+	_ "github.com/daoio/crypto-wizards/eth"
+	"github.com/daoio/crypto-wizards/server"
+
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/spf13/viper"
 )
 
-// ebiten's game interface implementation
-type Game struct {
-	background *ebiten.Image
-}
+// Game implements ebiten.Game interface.
+type Game struct{}
 
-// repeatingKeyPressed return true when key is pressed considering the repeat state.
-func repeatingKeyPressed(key ebiten.Key) bool {
-	const (
-		delay    = 30
-		interval = 3
-	)
-	d := inpututil.KeyPressDuration(key)
-	if d == 1 {
-		return true
-	}
-	if d >= delay && (d-delay)%interval == 0 {
-		return true
-	}
-	return false
-}
-
-// updates screen each tic
+// Update proceeds the game state.
+// Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
+	// Write your game's logical update.
 	return nil
 }
 
+// Draw draws the game screen.
+// Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
-	img, _ := ebitenutil.NewImageFromURL("https://bafkreiekpohkd4xnoykoi6o4efhsrnifsk3w73a5o2frq3prfi2idibno4.ipfs.nftstorage.link/")
-	op := ebiten.DrawImageOptions{}
-	screen.DrawImage(img, &op)
+	/*c := cards.GetCards()
+	x := 80.0
+	y := 250.0
 
-	// get all cards
-	c := GetCards()
-
-	CheckChoose(screen)
-	CheckMove(screen)
-	switch {
-	default:
-		// render background
-		//screen.DrawImage(g.background, &opt)
-
-		// render cards on background
-		for i := 0; i < len(c); i++ {
-			c[i].Draw(screen)
+	for i := 0; i < len(c); i++ {
+		img, _, err := ebitenutil.NewImageFromFile(c[i])
+		if err != nil {
+			log.Fatal(err)
 		}
-	}
+		op := ebiten.DrawImageOptions{}
+		op.GeoM.Scale(1, 1)
+		x += 50
+		op.GeoM.Translate(x, y)
+		screen.DrawImage(img, &op)
+	}*/
 }
 
-// returns screen dimension
-func (g *Game) Layout(w, h int) (int, int) {
-	return viper.GetInt("width"), viper.GetInt("height")
+// Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
+// If you don't have to adjust the screen size with the outside size, just return a fixed size.
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+	return 640, 480
 }
 
-func NewGame() *Game {
-	back, _, err := ebitenutil.NewImageFromFile(viper.GetString("background"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	g := &Game{
-		background: back,
-	}
-
-	return g
-}
-
-func init() {
-	viper.SetConfigName("config")
-	viper.SetConfigType("json")
-	viper.AddConfigPath(".")
-
-	viper.OnConfigChange(func(in fsnotify.Event) {
-		log.Printf("Config file changed: %s", in.Name)
-	})
-	viper.WatchConfig()
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
-	}
-}
-
-// Runs new game
 func main() {
-	game := NewGame()
-	ebiten.SetWindowTitle(viper.GetString("title"))
-	ebiten.SetWindowSize(viper.GetInt("width"), viper.GetInt("height"))
+	// eth initialized => first user has authenticated, then it's time to start server and upgrade it to ws
+	server.StartServer()
+	server.FindNewGame()
+	game := &Game{}
+	// Specify the window size as you like. Here, a doubled size is specified.
+	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowTitle("Your game's title")
 
-	// start game loop
+	// Call ebiten.RunGame to start your game loop.
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
+
+	// delete temporary files
+	cards.DelTemp()
 }
